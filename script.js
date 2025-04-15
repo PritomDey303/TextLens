@@ -2,17 +2,18 @@ const htmlTag = document.documentElement;
 const sunIcon = document.getElementById ('sun-icon');
 const moonIcon = document.getElementById ('moon-icon');
 const changeTheme = document.getElementById ('change-theme');
-
+const lightTheme = 'fantasy';
+const darkTheme = 'abyss';
 const themeChanger = () => {
   const currentTheme = htmlTag.getAttribute ('data-theme');
-  if (currentTheme === 'synthwave') {
+  if (currentTheme === darkTheme) {
     sunIcon.classList.add ('hidden');
     moonIcon.classList.remove ('hidden');
-    htmlTag.setAttribute ('data-theme', 'bumblebee');
+    htmlTag.setAttribute ('data-theme', lightTheme);
   } else {
     sunIcon.classList.remove ('hidden');
     moonIcon.classList.add ('hidden');
-    htmlTag.setAttribute ('data-theme', 'synthwave');
+    htmlTag.setAttribute ('data-theme', darkTheme);
   }
 };
 themeChanger ();
