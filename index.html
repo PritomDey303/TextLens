@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="bumblebee">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TextLens</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/daisyui@5"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- v5 -->
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+    <link
+      href="https://cdn.jsdelivr.net/npm/daisyui@5/themes.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+  </head>
+  <body class="p-5 relative">
+    <!-- light dark mode toggler -->
+    <div
+      class="w-10 h-10 absolute flex justify-center items-center rounded-full shadow-xl cursor-pointer top-5 right-5 bg-accent"
+      id="change-theme"
+    >
+      <!-- sun-icon -->
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="currentColor"
+        viewBox="0 0 24 24"
+        stroke-width="1.5"
+        stroke="currentColor"
+        class="size-6 text-black"
+        id="sun-icon"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z"
+        />
+      </svg>
+
+      <!-- moon icon -->
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke-width="1.5"
+        stroke="currentColor"
+        class="size-6 text-white"
+        id="moon-icon"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z"
+        />
+      </svg>
+    </div>
+
+    <!-- image input -->
+    <div
+      class="mx-auto lg:w-1/2 px-5 py-15 shadow-lg rounded-xl mt-15 lg:mt-20 bg-gray-100"
+    >
+      <h1
+        class="mx-auto text-center text-gray-700 opacity-100 text-3xl animate-bounce font-bold px-5"
+      >
+        TextLens
+      </h1>
+      <p class="text-gray-500 text-center pb-5">
+        Where images speak your language.
+      </p>
+
+      <input
+        type="file"
+        id="image-input"
+        class="file-input file-input-accent lg:w-1/2 mx-auto block"
+      />
+      <!-- preview image -->
+      <div class="lg:w-1/2 mx-auto my-3">
+        <img
+          src=""
+          alt="Preview"
+          class="w-full max-w-sm rounded-xl shadow-md object-cover hidden"
+          id="preview-image"
+        />
+      </div>
+
+      <!-- button group -->
+      <div class="flex justify-center gap-4 py-4">
+        <button class="btn btn-lg btn-secondary" id="process-btn">
+          Process
+        </button>
+
+        <button
+          class="btn btn-lg btn-secondary opacity-90 cursor-not-allowed hidden"
+          id="loading-btn"
+          disabled
+        >
+          <span class="loading loading-spinner"></span>
+          Process
+        </button>
+      </div>
+
+      <div id="display-block" class="lg:w-1/2 mx-auto mt-10 hidden">
+        <textarea
+          type="text"
+          placeholder="Accent"
+          id="content-box"
+          class="textarea textarea-accent block mx-auto"
+          rows="10"
+        ></textarea>
+
+        <p class="text-primary hidden" id="copy-msg">text copied.</p>
+        <div class="flex justify-center gap-4 my-5">
+          <button class="btn btn-accent" id="copy-btn">Copy</button>
+
+          <button class="btn btn-primary" id="reset-btn">Reset</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="/script.js"></script>
+  </body>
+</html>
