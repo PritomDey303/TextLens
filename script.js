@@ -100,7 +100,12 @@ const handleImage = () => {
   processBtn.classList.add ('hidden');
   loadingBtn.classList.remove ('hidden');
   const input = imageInput;
-  if (!input.files.length) return;
+  if (!input.files.length) {
+    processBtn.classList.remove ('hidden');
+    loadingBtn.classList.add ('hidden');
+    alert ('No image selected!');
+    return;
+  }
 
   const file = input.files[0];
   const reader = new FileReader ();
