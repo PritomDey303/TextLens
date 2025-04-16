@@ -81,30 +81,52 @@ copyBtn.addEventListener ('click', copyContents);
 //image to text
 
 const afterProcess = text => {
-  displayBlock.classList.remove ('hidden');
-  contentBox.textContent = text;
+  if (text.length) {
+    displayBlock.classList.remove ('hidden');
+    contentBox.value = text;
+  } else {
+    alert ('Sorry! Something went wrong!');
+  }
 };
 
 const extractTextFromImage = async image => {
   try {
+    progressBarContainer.classList.remove ('hidden');
     const result = await Tesseract.recognize (image, 'eng+ben', {
-      logger: m => console.log (m),
+      logger: m => {
+        progressBar.setAttribute ('value', 0);
+        if (m.status === 'recognizing text') {
+          const progress = Math.floor (m.progress * 100);
+          progressBar.setAttribute ('value', progress);
+        }
+      },
     });
+    progressBarContainer.classList.add ('hidden');
     return result.data.text;
   } catch (error) {
+    progressBarContainer.classList.add ('hidden');
+
     console.error ('OCR Error:', error);
     throw 'Failed to extract text';
   }
 };
 
+let isProcessing = false;
+
 const handleImage = () => {
+  if (isProcessing) return;
+  isProcessing = true;
+
   processBtn.classList.add ('hidden');
   loadingBtn.classList.remove ('hidden');
+  displayBlock.classList.add ('hidden');
+
   const input = imageInput;
   if (!input.files.length) {
+    alert ('No image selected!');
     processBtn.classList.remove ('hidden');
     loadingBtn.classList.add ('hidden');
-    alert ('No image selected!');
+    isProcessing = false;
     return;
   }
 
@@ -115,22 +137,29 @@ const handleImage = () => {
     try {
       const imageUrl = reader.result;
       const text = await extractTextFromImage (imageUrl);
-      console.log (text);
-      afterProcess (text);
+      console.log ('Extracted:', text);
+      console.log ('Length:', text.trim ().length);
 
-      processBtn.classList.remove ('hidden');
-      loadingBtn.classList.add ('hidden');
+      if (text && text.trim ().length > 0) {
+        console.log (`inside=${text}`);
+        afterProcess (text);
+      } else {
+        afterProcess ('⚠️ No readable text found in the image.');
+      }
     } catch (err) {
-      console.error (err);
+      console.error ('OCR Error:', err);
+      afterProcess ('❌ Failed to extract text.');
+    } finally {
       processBtn.classList.remove ('hidden');
       loadingBtn.classList.add ('hidden');
+      isProcessing = false;
     }
   };
 
   reader.readAsDataURL (file);
 };
-
 const processBtn = document.getElementById ('process-btn');
 const loadingBtn = document.getElementById ('loading-btn');
-
+const progressBarContainer = document.getElementById ('progress-bar-container');
+const progressBar = document.getElementById ('progress-bar');
 processBtn.addEventListener ('click', handleImage);
